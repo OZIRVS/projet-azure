@@ -1,0 +1,12 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html"
+  },
+  "proxies": [
+    {
+      "context": "/api",
+      "status": 200,
+      "target": "http://localhost:7071"
+    }
+  ]
+}
