@@ -1,52 +1,69 @@
 <template>
-  <div id="app">
-    <div class="container">
-      <header>
-        <h1>Azure Project</h1>
-        <p class="subtitle">Vue.js + Node Express + Cosmos DB</p>
+  <div class="flex flex-col md:flex-row min-h-screen md:h-screen w-full font-sans md:overflow-hidden">
+
+    <div class="flex flex-col justify-center items-center w-full md:w-[660px] shrink-0 px-6 py-12 md:px-10 bg-blue-200">
+
+      <header class="text-center mb-8 w-full">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-blue-500 tracking-tight">Azure Project</h1>
+        <p class="text-slate-400 text-xs md:text-sm mt-1 tracking-widest uppercase">Vue.js · Node Express · Cosmos DB</p>
+        <p class="text-xs md:text-sm text-slate-400 uppercase tracking-widest mt-3">
+          Réalisé par
+          <strong class="text-red-400 font-bold">Luka</strong> ·
+          <strong class="text-red-400 font-bold">Brahim</strong> ·
+          <strong class="text-red-400 font-bold">Deniz</strong>
+        </p>
       </header>
 
-      <main class="card">
-        <div class="input-group">
-          <label>Ajouter un nouveau prénom</label>
-          <div class="flex-row">
-            <input 
-              v-model="nouveauPrenom" 
-              type="text" 
-              placeholder="Ex: Lucas" 
-              @keyup.enter="ajouterUtilisateur"
+      <main class="bg-white rounded-2xl shadow-lg border border-slate-200 w-full max-w-sm p-5 md:p-7">
+        <div class="mb-1">
+          <label class="block text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">
+            Ajouter un nouveau prénom
+          </label>
+          <div class="flex gap-2">
+            <input
+              v-model="nouveauPrenom"
+              type="text"
+              class="flex-1 px-4 py-2.5 border border-slate-200 rounded-lg text-sm bg-slate-50 outline-none focus:border-blue-400"
+              placeholder="Ex: Jeffrey"
             />
-            <button @click="ajouterUtilisateur" :disabled="chargement">
+            <button @click="ajouterUtilisateur" :disabled="chargement" class="bg-blue-500 text-white font-bold px-4 md:px-5 rounded-lg text-sm">
               {{ chargement ? '...' : 'Ajouter' }}
             </button>
           </div>
         </div>
 
-        <div v-if="message.texte" :class="['alert', message.type]">
+        <div v-if="message.texte" :class="['mt-4 px-4 py-2.5 rounded-lg text-xs text-center', message.type === 'success' ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700']">
           {{ message.texte }}
         </div>
 
-        <section class="list-section">
-          <div class="list-header">
-            <h3>Utilisateurs en base</h3>
-            <button class="btn-refresh" @click="chargerDonnees">🔄</button>
+        <section class="mt-6 pt-5 border-t border-slate-100">
+          <div class="flex justify-between items-center mb-3">
+            <h3 class="text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-widest">Utilisateurs en base</h3>
+            <button @click="chargerDonnees" class="text-base bg-transparent cursor-pointer">🔄</button>
           </div>
-          
-          <ul v-if="utilisateurs.length > 0">
-            <li v-for="user in utilisateurs" :key="user.id">
-              <span class="dot"></span> {{ user.prenom }}
+          <ul v-if="utilisateurs.length > 0" class="max-h-40 md:max-h-none overflow-y-auto">
+            <li v-for="user in utilisateurs" :key="user.id" class="flex items-center py-2 text-sm text-slate-700">
+              <span class="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+              {{ user.prenom }}
             </li>
           </ul>
-          <p v-else class="empty-list">Aucun utilisateur trouvé.</p>
         </section>
       </main>
     </div>
+
+    <div class="flex-1 h-[300px] md:h-full w-full bg-white leading-[0]">
+      <img
+        src="/img/Arboresence-site.png"
+        alt="Illustration Azure"
+        class="w-full h-full object-fill block border-none p-0 m-0"
+      />
+    </div>
+
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
-
 
 const API_URL = "https://api-azure-eugpbmgdaufageaj.westus2-01.azurewebsites.net/api/";
 
@@ -54,7 +71,6 @@ const nouveauPrenom = ref('');
 const utilisateurs = ref([]);
 const chargement = ref(false);
 const message = ref({ texte: '', type: '' });
-
 
 const chargerDonnees = async () => {
   try {
@@ -69,21 +85,18 @@ const chargerDonnees = async () => {
 
 const ajouterUtilisateur = async () => {
   if (!nouveauPrenom.value.trim()) return;
-
   chargement.value = true;
   message.value = { texte: '', type: '' };
-
   try {
     const res = await fetch(`${API_URL}/addUser`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prenom: nouveauPrenom.value })
     });
-
     if (res.ok) {
       message.value = { texte: "Ajouté avec succès !", type: "success" };
       nouveauPrenom.value = '';
-      await chargerDonnees(); 
+      await chargerDonnees();
     } else {
       throw new Error("Échec de l'insertion");
     }
@@ -91,44 +104,19 @@ const ajouterUtilisateur = async () => {
     message.value = { texte: "Erreur de connexion au serveur.", type: "error" };
   } finally {
     chargement.value = false;
-
-    setTimeout(() => { if(message.value.type === 'success') message.value.texte = '' }, 3000);
+    setTimeout(() => { if (message.value.type === 'success') message.value.texte = '' }, 3000);
   }
 };
-
 
 onMounted(chargerDonnees);
 </script>
 
-<style scoped>
-.container { max-width: 450px; margin: 50px auto; font-family: sans-serif; color: #333; }
-header { text-align: center; margin-bottom: 30px; }
-h1 { color: #0078d4; margin: 0; }
-.subtitle { color: #666; font-size: 0.9rem; }
-
-.card { background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #eee; }
-
-.input-group label { display: block; font-size: 0.8rem; font-weight: bold; margin-bottom: 8px; color: #555; }
-.flex-row { display: flex; gap: 10px; }
-
-input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 6px; outline: none; }
-input:focus { border-color: #0078d4; }
-
-button { background: #0078d4; color: white; border: none; padding: 0 15px; border-radius: 6px; cursor: pointer; font-weight: bold; }
-button:hover { background: #005a9e; }
-button:disabled { background: #ccc; }
-
-.alert { margin-top: 15px; padding: 10px; border-radius: 6px; font-size: 0.85rem; text-align: center; }
-.success { background: #e6fffa; color: #2d6a4f; border: 1px solid #b7e4c7; }
-.error { background: #fff1f0; color: #a8071a; border: 1px solid #ffa39e; }
-
-.list-section { margin-top: 25px; border-top: 1px solid #eee; padding-top: 20px; }
-.list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-.list-header h3 { font-size: 1rem; margin: 0; }
-.btn-refresh { background: none; border: none; cursor: pointer; font-size: 1.1rem; }
-
-ul { list-style: none; padding: 0; }
-li { padding: 10px; border-bottom: 1px solid #fafafa; display: flex; align-items: center; font-size: 0.95rem; }
-.dot { height: 8px; width: 8px; background: #0078d4; border-radius: 50%; margin-right: 12px; }
-.empty-list { text-align: center; color: #999; font-style: italic; font-size: 0.85rem; }
+<style>
+html, body, #app {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
 </style>

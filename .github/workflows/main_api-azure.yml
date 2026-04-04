@@ -25,6 +25,7 @@ jobs:
         run: |
           cd back-azure
           npm install
+          npm test --if-present
 
     
       - name: Login to Azure

@@ -11,7 +11,7 @@ app.use(express.json());
 const client = new CosmosClient(process.env.COSMOS_CONNECTION_STRING);
 const container = client.database("bdd-azure").container("Users");
 
-// ROUTE 1 : Récupérer les prénoms
+
 app.get('/api/getUsers', async (req, res) => {
     try {
         const { resources } = await container.items.readAll().fetchAll();
@@ -21,7 +21,7 @@ app.get('/api/getUsers', async (req, res) => {
     }
 });
 
-// ROUTE 2 : Ajouter un prénom
+
 app.post('/api/addUser', async (req, res) => {
     try {
         const { prenom } = req.body;
