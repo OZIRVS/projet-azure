@@ -48,7 +48,7 @@
 import { ref, onMounted } from 'vue';
 
 
-const API_URL = "https://api-azure-eugpbmgdaufageaj.westus2-01.azurewebsites.net";
+const API_URL = "https://api-azure-eugpbmgdaufageaj.westus2-01.azurewebsites.net/api";
 
 const nouveauPrenom = ref('');
 const utilisateurs = ref([]);
@@ -74,7 +74,7 @@ const ajouterUtilisateur = async () => {
   message.value = { texte: '', type: '' };
 
   try {
-    const res = await fetch(`${API_URL}/addUser`, {
+    const res = await fetch(`${API_URL}addUser`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prenom: nouveauPrenom.value })
