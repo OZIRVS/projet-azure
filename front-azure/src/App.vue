@@ -47,15 +47,15 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 
-// Configuration de l'URL du backend Express
-const API_URL = "http://localhost:3000/api";
+
+const API_URL = "https://api-azure.azurewebsites.net/api";
 
 const nouveauPrenom = ref('');
 const utilisateurs = ref([]);
 const chargement = ref(false);
 const message = ref({ texte: '', type: '' });
 
-// FONCTION 1 : Récupérer les données (GET)
+
 const chargerDonnees = async () => {
   try {
     const res = await fetch(`${API_URL}/getUsers`);
@@ -67,7 +67,6 @@ const chargerDonnees = async () => {
   }
 };
 
-// FONCTION 2 : Ajouter une donnée (POST)
 const ajouterUtilisateur = async () => {
   if (!nouveauPrenom.value.trim()) return;
 
@@ -84,7 +83,7 @@ const ajouterUtilisateur = async () => {
     if (res.ok) {
       message.value = { texte: "Ajouté avec succès !", type: "success" };
       nouveauPrenom.value = '';
-      await chargerDonnees(); // Rafraîchir la liste après l'ajout
+      await chargerDonnees(); 
     } else {
       throw new Error("Échec de l'insertion");
     }
@@ -92,12 +91,12 @@ const ajouterUtilisateur = async () => {
     message.value = { texte: "Erreur de connexion au serveur.", type: "error" };
   } finally {
     chargement.value = false;
-    // Efface le message de succès après 3 secondes
+
     setTimeout(() => { if(message.value.type === 'success') message.value.texte = '' }, 3000);
   }
 };
 
-// Charger les données dès l'ouverture de la page
+
 onMounted(chargerDonnees);
 </script>
 

@@ -8,8 +8,7 @@ app.use(cors());
 app.use(express.json());
 
 
-const endpoint = process.env.COSMOS_CONNECTION_STRING;
-const client = new CosmosClient(endpoint);
+const client = new CosmosClient(process.env.COSMOS_CONNECTION_STRING);
 const container = client.database("bdd-azure").container("Users");
 
 // ROUTE 1 : Récupérer les prénoms
@@ -35,5 +34,7 @@ app.post('/api/addUser', async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Serveur démarré sur http://localhost:${PORT}`));
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Serveur démarré sur le port ${PORT}`);
+});
