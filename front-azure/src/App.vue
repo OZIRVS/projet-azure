@@ -48,7 +48,7 @@
 import { ref, onMounted } from 'vue';
 
 
-const API_URL = "https://api-azure-eugpbmgdaufageaj.westus2-01.azurewebsites.net/api";
+const API_URL = "https://api-azure-eugpbmgdaufageaj.westus2-01.azurewebsites.net/api/";
 
 const nouveauPrenom = ref('');
 const utilisateurs = ref([]);
