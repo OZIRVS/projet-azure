@@ -5,8 +5,8 @@
 
       <header class="text-center mb-8 w-full">
         <h1 class="text-3xl md:text-4xl font-extrabold text-blue-500 tracking-tight">Azure Project</h1>
-        <p class="text-slate-400 text-xs md:text-sm mt-1 tracking-widest uppercase">Vue.js · Node Express · Cosmos DB</p>
-        <p class="text-xs md:text-sm text-slate-400 uppercase tracking-widest mt-3">
+        <p class="text-slate-400 text-xs md:text-xl mt-1 tracking-widest uppercase">Vue.js · Node Express · Cosmos DB</p>
+        <p class="text-xs md:text-xl text-slate-400 uppercase tracking-widest mt-3">
           Réalisé par
           <strong class="text-red-400 font-bold">Luka</strong> ·
           <strong class="text-red-400 font-bold">Brahim</strong> ·
